@@ -90,6 +90,42 @@ where department_id is not null and job_id = 'ST_CLERK';
 
 SELECT EMPLOYEE_ID,FIRST_NAME,JOB_ID,SALARY*COMMISSION_PCT commission
 FROM EMPLOYEES
-WHERE COMMISSION_PCT IS NOT NULL
+WHERE COMMISSION_PCT IS NOT NULL;
 
+
+--------------------------------------------------------------------
+select first_name,last_name,email,phone_number,lower(job_id)
+from employees
+where first_name = 'Curtis';
+
+select employee_id,first_name,hire_date,replace (job_id, 'IT_PROG','프로그래머') JOB_ID
+from employees
+where department_id in(60,70,80,90);
+
+select employee_id,first_name||' '||LAST_NAME,department_id,JOB_ID
+from employees
+where JOB_id in('AD_PRES','PU_CLERK');
+
+--------------------------------------------------------
+SELECT LAST_NAME,SALARY,
+CASE TRUNC(SALARY/2000,0)
+WHEN 0 THEN 0
+WHEN 1 THEN 0.09
+WHEN 2 THEN 0.20
+WHEN 3 THEN 0.30
+WHEN 4 THEN 0.40
+WHEN 5 THEN 0.42
+WHEN 6 THEN 0.44
+ELSE 0.45 END
+AS TAX_RATE
+FROM employees
+WHERE DEPARTMENT_ID = 80;
+
+--회사 내의 최대 연봉 및 최소 연봉의 차이를 출력
+select max(salALRY),min(salALRY),max(salALRY)-min(salALRY)
+from EMPLOYEES;
+
+--매니저로 근무하는 사원들의 총 숫자 출력(매니저 중복 제거)
+select  COUNT(DISTINCT MANAGER_ID)
+from EMPLOYEES;
 
