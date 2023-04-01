@@ -129,3 +129,88 @@ from EMPLOYEES;
 select  COUNT(DISTINCT MANAGER_ID)
 from EMPLOYEES;
 
+
+--매니저의 고용일자 찾는거 힘듬
+select e1.hire_date,e1.last_name, e1.manager_id
+from employees e1, employees e2
+where e1.manager_id = e2.employee_id and e1.hire_date < e2.hire_date;
+
+select e1.hire_date,e1.last_name, e1.manager_id
+from employees e1 join employees e2 on e1.manager_id = e2.employee_id and e1.hire_date < e2.hire_date;
+
+
+
+
+
+select employee_id,last_name,e.department_id,city
+from employees e, departments d,locations l
+where l.location_id = d.location_id and e.department_id = d.department_id and l.city like 'T%';
+
+
+select employee_id,last_name,e.department_id,salary
+from employees e,departments d1
+where e.department_id=d1.department_id and d1.location_id=1700;
+
+select department_name,location_id,
+count(*),
+round(avg(salary),2)
+from employees e,departments d
+where e.department_id = d.department_id
+group by department_name,location_id;
+
+
+select d.department_id,last_name,job_id
+from departments d,employees e
+where e.department_id = d.department_id and d.department_name = 'Executive';
+
+
+select distinct e1.department_id,e1.first_name||e1.last_name,e1.salary,e1.hire_date
+from employees e1,employees e2
+where e1.department_id = e2.department_id
+and e1.hire_date<e2.hire_date and e1.salary<e2.salary;
+
+--1
+SELECT EMPLOYEE_ID,LAST_NAME
+FROM EMPLOYEES
+WHERE LAST_NAME LIKE '%u%';
+
+SELECT EMPLOYEE_ID,LAST_NAME
+FROM EMPLOYEES e1
+WHERE e1.department_id in (select distinct department_id from employees where LAST_NAME LIKE '%u%');
+
+--2
+SELECT LAST_NAME,JOB_ID,SALARY
+FROM employees
+WHERE SALARY>(SELECT MAX(SALARY) FROM employees WHERE JOB_ID='SA_MAN');
+--3
+SELECT LAST_NAME,DEPARTMENT_ID,SALARY
+FROM employees
+WHERE (department_id,SALARY) IN(SELECT department_id,SALARY FROM EMPLOYEES WHERE commission_pct>0);
+--4
+SELECT EMPLOYEE_ID,LAST_NAME,SALARY
+FROM employees
+WHERE SALARY > (SELECT AVG(SALARY) FROM employees) AND LAST_NAME LIKE '%u%';
+
+select employee_id,last_name,salary
+from (select distinct department_id
+from employees
+where SALARY > (SELECT AVG(SALARY) FROM employees) AND LAST_NAME LIKE '%u%') dept,
+employees e
+where dept.department_id = e.department_id;
+
+
+
+select last_name,hire_date
+from employees
+where hire_date>(select hire_date from employees where last_name='Davies');
+
+select distinct e1.last_name,e1.salary
+from employees e1,employees e2
+where e1.employee_id = e2.manager_id and 
+e1.manager_id in (select employee_id from employees where last_name = 'King');
+
+
+
+
+
+
